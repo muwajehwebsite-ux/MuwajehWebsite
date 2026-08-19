@@ -818,60 +818,55 @@ router.delete("/current", requireAuth, async (req, res) => {
 // =========================================================
 
 router.get("/results/pdf", requireAuth, async (req, res) => {
+  let browser;
 
-    let browser;
-
-    try {
-
-        // Get user's completed attempt
-        const attemptResult = await pool.query(`
+  try {
+    // Get user's completed attempt
+    const attemptResult = await pool.query(
+      `
             SELECT id, completed_at
             FROM assessment_attempts
             WHERE user_id = $1
               AND status = 'completed'
             ORDER BY completed_at DESC NULLS LAST, id DESC
             LIMIT 1
-        `, [req.user.userId]);
+        `,
+      [req.user.userId],
+    );
 
+    if (attemptResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No completed assessment found",
+      });
+    }
 
-        if (attemptResult.rows.length === 0) {
+    const attempt = attemptResult.rows[0];
 
-            return res.status(404).json({
-                success: false,
-                message: "No completed assessment found"
-            });
-        }
-
-
-        const attempt =
-            attemptResult.rows[0];
-
-
-        // Get user
-        const userResult = await pool.query(`
+    // Get user
+    const userResult = await pool.query(
+      `
             SELECT
                 name,
                 email
             FROM users
             WHERE id = $1
-        `, [req.user.userId]);
+        `,
+      [req.user.userId],
+    );
 
+    if (userResult.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-        if (userResult.rows.length === 0) {
+    const user = userResult.rows[0];
 
-            return res.status(404).json({
-                success: false,
-                message: "User not found"
-            });
-        }
-
-
-        const user =
-            userResult.rows[0];
-
-
-        // Get results
-        const resultsResult = await pool.query(`
+    // Get results
+    const resultsResult = await pool.query(
+      `
             SELECT
                 ar.major_id AS "majorId",
                 ar.compatibility_score AS "compatibilityScore",
@@ -890,53 +885,39 @@ router.get("/results/pdf", requireAuth, async (req, res) => {
             WHERE ar.attempt_id = $1
 
             ORDER BY ar.rank
-        `, [attempt.id]);
+        `,
+      [attempt.id],
+    );
 
+    const results = resultsResult.rows;
 
-        const results =
-            resultsResult.rows;
+    if (results.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No assessment results found",
+      });
+    }
 
+    // =====================================================
+    // BUILD HTML
+    // =====================================================
 
-        if (results.length === 0) {
+    const resultCards = results
+      .slice(0, 6)
+      .map((result, index) => {
+        const score = Math.round(Number(result.compatibilityScore));
 
-            return res.status(404).json({
-                success: false,
-                message: "No assessment results found"
-            });
+        let label = "توافق متوسط";
+
+        if (score >= 90) {
+          label = "توافق ممتاز";
+        } else if (score >= 80) {
+          label = "توافق جيد جداً";
+        } else if (score >= 70) {
+          label = "توافق جيد";
         }
 
-
-        // =====================================================
-        // BUILD HTML
-        // =====================================================
-
-        const resultCards =
-            results
-                .slice(0, 6)
-                .map((result, index) => {
-
-                    const score =
-                        Math.round(
-                            Number(
-                                result.compatibilityScore
-                            )
-                        );
-
-
-                    let label =
-                        "توافق متوسط";
-
-
-                    if (score >= 90) {
-                        label = "توافق ممتاز";
-                    } else if (score >= 80) {
-                        label = "توافق جيد جداً";
-                    } else if (score >= 70) {
-                        label = "توافق جيد";
-                    }
-
-
-                    return `
+        return `
                         <div class="result-card">
 
                             <div class="rank">
@@ -947,8 +928,7 @@ router.get("/results/pdf", requireAuth, async (req, res) => {
 
                                 <h2>
                                     ${escapeHtml(
-                                        result.nameAr ||
-                                        "تخصص غير معروف"
+                                      result.nameAr || "تخصص غير معروف",
                                     )}
                                 </h2>
 
@@ -964,21 +944,14 @@ router.get("/results/pdf", requireAuth, async (req, res) => {
 
                         </div>
                     `;
-                })
-                .join("");
+      })
+      .join("");
 
+    const completedDate = attempt.completed_at
+      ? new Date(attempt.completed_at).toLocaleDateString("ar-SA")
+      : "";
 
-        const completedDate =
-            attempt.completed_at
-                ? new Date(
-                    attempt.completed_at
-                ).toLocaleDateString(
-                    "ar-SA"
-                )
-                : "";
-
-
-        const html = `
+    const html = `
             <!DOCTYPE html>
 
             <html lang="ar" dir="rtl">
@@ -1220,100 +1193,79 @@ router.get("/results/pdf", requireAuth, async (req, res) => {
             </html>
         `;
 
+    // =====================================================
+    // PUPPETEER
+    // =====================================================
 
-        // =====================================================
-        // PUPPETEER
-        // =====================================================
+    browser = await puppeteer.launch({
+      headless: "new",
+      executablePath: puppeteer.executablePath(),
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-gpu",
+        "--no-zygote",
+        "--single-process",
+      ],
+    });
 
-        browser = await puppeteer.launch({
-            headless: true,
-            args: [
-                "--no-sandbox",
-                "--disable-setuid-sandbox"
-            ]
-        });
+    const page = await browser.newPage();
 
+    await page.setContent(html, {
+      waitUntil: "networkidle0",
+    });
 
-        const page =
-            await browser.newPage();
+    const pdf = await page.pdf({
+      format: "A4",
 
+      printBackground: true,
 
-        await page.setContent(
-            html,
-            {
-                waitUntil: "networkidle0"
-            }
-        );
+      margin: {
+        top: "12mm",
+        right: "12mm",
+        bottom: "12mm",
+        left: "12mm",
+      },
+    });
 
+    await browser.close();
 
-        const pdf =
-            await page.pdf({
+    browser = null;
 
-                format: "A4",
+    res.setHeader("Content-Type", "application/pdf");
 
-                printBackground: true,
+    res.setHeader(
+      "Content-Disposition",
+      'attachment; filename="muwajeh-results.pdf"',
+    );
 
-                margin: {
-                    top: "12mm",
-                    right: "12mm",
-                    bottom: "12mm",
-                    left: "12mm"
-                }
-            });
+    res.send(pdf);
+  } catch (error) {
+    console.error("PDF generation error:", error);
 
-
-        await browser.close();
-
-        browser = null;
-
-
-        res.setHeader(
-            "Content-Type",
-            "application/pdf"
-        );
-
-        res.setHeader(
-            "Content-Disposition",
-            'attachment; filename="muwajeh-results.pdf"'
-        );
-
-
-        res.send(pdf);
-
-
-    } catch (error) {
-
-        console.error(
-            "PDF generation error:",
-            error
-        );
-
-
-        if (browser) {
-            await browser.close();
-        }
-
-
-        res.status(500).json({
-            success: false,
-            message: "Failed to generate PDF"
-        });
+    if (browser) {
+      await browser.close();
     }
-});
 
+    res.status(500).json({
+      success: false,
+      message: "Failed to generate PDF",
+    });
+  }
+});
 
 // =========================================================
 // ESCAPE HTML
 // =========================================================
 
 function escapeHtml(value) {
-
-    return String(value ?? "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }
 
 module.exports = router;
