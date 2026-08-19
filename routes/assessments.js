@@ -1196,17 +1196,16 @@ router.get("/results/pdf", requireAuth, async (req, res) => {
     // =====================================================
     // PUPPETEER
     // =====================================================
+    const executablePath = await puppeteer.executablePath();
 
     browser = await puppeteer.launch({
-      headless: "new",
-      executablePath: puppeteer.executablePath(),
+      headless: true,
+      executablePath,
       args: [
         "--no-sandbox",
         "--disable-setuid-sandbox",
         "--disable-dev-shm-usage",
         "--disable-gpu",
-        "--no-zygote",
-        "--single-process",
       ],
     });
 
