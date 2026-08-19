@@ -16,13 +16,16 @@ app.use(express.json());
 // FRONTEND
 // ======================================================
 
-app.use(express.static(path.join(__dirname, "HTML")));
+// Serve the entire project root
+app.use(express.static(__dirname));
 
-app.use("/CSS", express.static(path.join(__dirname, "CSS")));
 
-app.use("/JS", express.static(path.join(__dirname, "JS")));
-
-app.use("/images", express.static(__dirname));
+// Homepage
+app.get("/", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "HTML", "index.html")
+    );
+});
 
 
 // ======================================================
@@ -66,17 +69,6 @@ app.get("/api/test", (req, res) => {
 
 app.get("/ping", (req, res) => {
     res.status(200).send("pong");
-});
-
-
-// ======================================================
-// HOMEPAGE
-// ======================================================
-
-app.get("/", (req, res) => {
-    res.sendFile(
-        path.join(__dirname, "HTML", "index.html")
-    );
 });
 
 
