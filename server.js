@@ -16,8 +16,28 @@ app.use(express.json());
 // FRONTEND
 // ======================================================
 
-// Serve the entire project root
-app.use(express.static(__dirname));
+// HTML files become the website root
+app.use(express.static(path.join(__dirname, "HTML")));
+
+// CSS
+app.use("/CSS", express.static(path.join(__dirname, "CSS")));
+
+// JavaScript
+app.use("/JS", express.static(path.join(__dirname, "JS")));
+
+
+// Root images
+app.get("/Logo.png", (req, res) => {
+    res.sendFile(path.join(__dirname, "Logo.png"));
+});
+
+app.get("/LogoIcon.png", (req, res) => {
+    res.sendFile(path.join(__dirname, "LogoIcon.png"));
+});
+
+app.get("/University.jpg", (req, res) => {
+    res.sendFile(path.join(__dirname, "University.jpg"));
+});
 
 
 // Homepage
