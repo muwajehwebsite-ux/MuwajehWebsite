@@ -4,21 +4,20 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/shabebi/Muwajeh.git"
+    "url": "https://github.com/muwajehwebsite-ux/MuwajehWebsite.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "bugs": {
-    "url": "https://github.com/shabebi/Muwajeh/issues"
+    "url": "https://github.com/muwajehwebsite-ux/MuwajehWebsite/issues"
   },
-  "homepage": "https://github.com/shabebi/Muwajeh#readme",
+  "homepage": "https://github.com/muwajehwebsite-ux/MuwajehWebsite#readme",
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",

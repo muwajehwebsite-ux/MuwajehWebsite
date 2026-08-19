@@ -12,7 +12,7 @@
  *   DELETE /api/wishlist/:majorId
  */
 
-const API_URL = window.MUWAJEH_API_URL || "http://localhost:3000/api";
+const API_URL = window.MUWAJEH_API_URL || "http:///api/api";
 
 let university = null;
 let faculties = [];
@@ -562,8 +562,7 @@ function createMajorCard(major, options = {}) {
 
   details.className = "details-link";
 
-  details.href =
-    `major_details.html?id=${encodeURIComponent(major.id)}`;
+  details.href = `major_details.html?id=${encodeURIComponent(major.id)}`;
 
   details.innerHTML = `عرض التفاصيل <i class="fa-solid fa-arrow-left"></i>`;
 
@@ -788,7 +787,7 @@ function runSearch() {
 
   document.querySelectorAll(".faculty-section").forEach((section) => {
     const cards = section.querySelectorAll(
-      ".faculty-majors .major-card[data-major-id]"
+      ".faculty-majors .major-card[data-major-id]",
     );
 
     let visibleCount = 0;
@@ -796,14 +795,9 @@ function runSearch() {
     cards.forEach((card) => {
       const majorName = normalizeSearch(card.dataset.search);
 
-      const matches =
-        !query ||
-        majorName.includes(query);
+      const matches = !query || majorName.includes(query);
 
-      card.classList.toggle(
-        "is-hidden",
-        !matches
-      );
+      card.classList.toggle("is-hidden", !matches);
 
       if (matches) {
         visibleCount++;
@@ -811,20 +805,13 @@ function runSearch() {
       }
     });
 
-    const countElement =
-      section.querySelector(
-        ".faculty-header span"
-      );
+    const countElement = section.querySelector(".faculty-header span");
 
     if (countElement) {
-      countElement.textContent =
-        getMajorCountText(visibleCount);
+      countElement.textContent = getMajorCountText(visibleCount);
     }
 
-    section.classList.toggle(
-      "is-hidden",
-      visibleCount === 0
-    );
+    section.classList.toggle("is-hidden", visibleCount === 0);
   });
 
   if (searchHint) {
@@ -834,10 +821,7 @@ function runSearch() {
   }
 
   if (searchSection) {
-    searchSection.classList.toggle(
-      "is-searching",
-      Boolean(query)
-    );
+    searchSection.classList.toggle("is-searching", Boolean(query));
   }
 }
 

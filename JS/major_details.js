@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:3000/api";
+const API_URL = "http:///api/api";
 
 const loading = document.getElementById("pageLoading");
 const errorBox = document.getElementById("pageError");
@@ -229,97 +229,92 @@ function renderSelectedYear(years) {
 }
 
 function formatCurrency(value) {
-    if (value === null || value === undefined || value === "") {
-        return "لا يوجد";
-    }
+  if (value === null || value === undefined || value === "") {
+    return "لا يوجد";
+  }
 
-    const number = Number(value);
+  const number = Number(value);
 
-    if (!Number.isFinite(number)) {
-        return "لا يوجد";
-    }
+  if (!Number.isFinite(number)) {
+    return "لا يوجد";
+  }
 
-    if (number === 0) {
-        return "مجاني";
-    }
+  if (number === 0) {
+    return "مجاني";
+  }
 
-    return `${number.toLocaleString("ar-YE")} ريال`;
+  return `${number.toLocaleString("ar-YE")} ريال`;
 }
 
 function renderAdmissions(options) {
-    admissionContainer.innerHTML = "";
+  admissionContainer.innerHTML = "";
 
-    if (!options.length) {
-        admissionContainer.innerHTML = `
+  if (!options.length) {
+    admissionContainer.innerHTML = `
             <div class="empty-state">
                 <i class="fa-solid fa-file-signature"></i>
                 <span>لا توجد بيانات رسوم مضافة لهذا التخصص حاليًا.</span>
             </div>
         `;
-        return;
+    return;
+  }
+
+  options.forEach((option) => {
+    const card = document.createElement("article");
+    card.className = "admission-card";
+
+    /* Card header */
+    const header = document.createElement("div");
+    header.className = "admission-card-header";
+
+    const title = document.createElement("h3");
+    title.textContent = option.name_ar || "نظام القبول";
+
+    /* Small badge */
+    const badge = document.createElement("span");
+    badge.className = "admission-type";
+
+    const admissionName = option.name_ar || "";
+
+    if (admissionName.includes("عام") || admissionName.includes("العام")) {
+      badge.textContent = "عام";
+      badge.classList.add("general");
+    } else if (admissionName.includes("موازي")) {
+      badge.textContent = "موازي";
+      badge.classList.add("parallel");
+    } else if (
+      admissionName.includes("نفقة") ||
+      admissionName.includes("خاصة")
+    ) {
+      badge.textContent = "نفقة خاصة";
+      badge.classList.add("private");
+    } else {
+      badge.textContent = "قبول";
     }
 
-    options.forEach(option => {
-        const card = document.createElement("article");
-        card.className = "admission-card";
+    header.appendChild(title);
+    header.appendChild(badge);
 
-        /* Card header */
-        const header = document.createElement("div");
-        header.className = "admission-card-header";
+    /* Fee */
+    const feeBox = document.createElement("div");
+    feeBox.className = "fee-box";
 
-        const title = document.createElement("h3");
-        title.textContent = option.name_ar || "نظام القبول";
+    const feeLabel = document.createElement("span");
+    feeLabel.className = "fee-label";
+    feeLabel.textContent = "الرسوم الدراسية";
 
-        /* Small badge */
-        const badge = document.createElement("span");
-        badge.className = "admission-type";
+    const fee = document.createElement("strong");
+    fee.className = "fee-value";
+    fee.textContent = formatCurrency(option.tuition_fee);
 
-        const admissionName = option.name_ar || "";
+    feeBox.appendChild(feeLabel);
+    feeBox.appendChild(fee);
 
-        if (
-            admissionName.includes("عام") ||
-            admissionName.includes("العام")
-        ) {
-            badge.textContent = "عام";
-            badge.classList.add("general");
-        } else if (
-            admissionName.includes("موازي")
-        ) {
-            badge.textContent = "موازي";
-            badge.classList.add("parallel");
-        } else if (
-            admissionName.includes("نفقة") ||
-            admissionName.includes("خاصة")
-        ) {
-            badge.textContent = "نفقة خاصة";
-            badge.classList.add("private");
-        } else {
-            badge.textContent = "قبول";
-        }
+    card.appendChild(header);
+    card.appendChild(feeBox);
 
-        header.appendChild(title);
-        header.appendChild(badge);
-
-        /* Fee */
-        const feeBox = document.createElement("div");
-        feeBox.className = "fee-box";
-
-        const feeLabel = document.createElement("span");
-        feeLabel.className = "fee-label";
-        feeLabel.textContent = "الرسوم الدراسية";
-
-        const fee = document.createElement("strong");
-        fee.className = "fee-value";
-        fee.textContent = formatCurrency(option.tuition_fee);
-
-        feeBox.appendChild(feeLabel);
-        feeBox.appendChild(fee);
-
-        card.appendChild(header);
-        card.appendChild(feeBox);
-
-        admissionContainer.appendChild(card);
-    });
+    admissionContainer.appendChild(card);
+  });
 }
 
 function setupTabs() {
