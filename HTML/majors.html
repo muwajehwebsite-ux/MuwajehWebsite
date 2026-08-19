@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>التخصصات | موّجه</title>
-    <link rel="icon" type="image/png" href="../LogoIcon.png">
+    <link rel="icon" type="image/png" href="/LogoIcon.png">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="../CSS/majors.css">
@@ -17,10 +20,10 @@
 
 <body>
 
-<header class="top-navigation">
+    <header class="top-navigation">
 
         <a href="index.html" class="logo" aria-label="موّجه">
-            <img src="../Logo.png" alt="موّجه">
+            <img src="/Logo.png" alt="موّجه">
         </a>
 
         <nav class="navigation-links" aria-label="التنقل الرئيسي">
@@ -93,89 +96,84 @@
 
     </header>
 
-<main class="main-content">
+    <main class="main-content">
 
-    <section class="page-heading">
-        <nav class="breadcrumb" aria-label="مسار الصفحة">
-            <a href="index.html">الرئيسية</a>
-            <i class="fa-solid fa-chevron-left"></i>
-            <span class="current">التخصصات</span>
-        </nav>
+        <section class="page-heading">
+            <nav class="breadcrumb" aria-label="مسار الصفحة">
+                <a href="index.html">الرئيسية</a>
+                <i class="fa-solid fa-chevron-left"></i>
+                <span class="current">التخصصات</span>
+            </nav>
 
-        <h1>دليل التخصصات الأكاديمية</h1>
+            <h1>دليل التخصصات الأكاديمية</h1>
 
-        <p>
-            استكشف التخصصات الأكاديمية المتاحة، وتعرّف على المجالات والجامعات
-            التي تقدمها لتجد المسار المناسب لك.
-        </p>
-    </section>
+            <p>
+                استكشف التخصصات الأكاديمية المتاحة، وتعرّف على المجالات والجامعات
+                التي تقدمها لتجد المسار المناسب لك.
+            </p>
+        </section>
 
-    <section class="search-section">
+        <section class="search-section">
 
-        <div class="search-box">
-            <button class="search-button" type="button" aria-label="البحث" id="searchButton">
-                <i class="fa-solid fa-arrow-left"></i>
-            </button>
+            <div class="search-box">
+                <button class="search-button" type="button" aria-label="البحث" id="searchButton">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </button>
 
-            <label class="search-input-wrapper" for="majorSearch">
-                <i class="fa-solid fa-magnifying-glass"></i>
-                <input
-                    id="majorSearch"
-                    type="search"
-                    placeholder="ابحث عن تخصص أو كلية..."
-                    autocomplete="off"
-                >
-            </label>
-        </div>
-
-        <div class="filter-row" id="facultyFilters" aria-label="فلترة حسب الكلية">
-            <button class="filter-button active" type="button" data-filter="all">
-                جميع الكليات
-            </button>
-        </div>
-
-    </section>
-
-    <section class="majors-section">
-
-        <div class="section-heading">
-            <div class="section-heading-title">
-                <i class="fa-regular fa-star"></i>
-                <h2>جميع التخصصات</h2>
+                <label class="search-input-wrapper" for="majorSearch">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input id="majorSearch" type="search" placeholder="ابحث عن تخصص أو كلية..." autocomplete="off">
+                </label>
             </div>
 
-            <span class="results-count" id="resultsCount">
-                جاري التحميل...
-            </span>
-        </div>
+            <div class="filter-row" id="facultyFilters" aria-label="فلترة حسب الكلية">
+                <button class="filter-button active" type="button" data-filter="all">
+                    جميع الكليات
+                </button>
+            </div>
 
-        <div class="page-loading" id="pageLoading">
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            <span>جاري تحميل التخصصات...</span>
-        </div>
+        </section>
 
-        <div class="majors-grid" id="majorsGrid"></div>
+        <section class="majors-section">
 
-        <div class="no-results" id="noResults" hidden>
-            <i class="fa-solid fa-magnifying-glass"></i>
-            <h3>لم يتم العثور على تخصصات</h3>
-            <p>جرّب البحث بكلمة أخرى أو اختر كلية مختلفة.</p>
-        </div>
+            <div class="section-heading">
+                <div class="section-heading-title">
+                    <i class="fa-regular fa-star"></i>
+                    <h2>جميع التخصصات</h2>
+                </div>
 
-        <div class="page-error" id="pageError" hidden>
-            <i class="fa-solid fa-circle-exclamation"></i>
-            <h3>تعذر تحميل التخصصات</h3>
-            <p id="pageErrorText">
-                حدث خطأ أثناء الاتصال بالخادم. حاول تحديث الصفحة.
-            </p>
-            <button type="button" id="retryButton" class="retry-button">
-                إعادة المحاولة
-            </button>
-        </div>
+                <span class="results-count" id="resultsCount">
+                    جاري التحميل...
+                </span>
+            </div>
 
-    </section>
+            <div class="page-loading" id="pageLoading">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                <span>جاري تحميل التخصصات...</span>
+            </div>
 
-</main>
+            <div class="majors-grid" id="majorsGrid"></div>
+
+            <div class="no-results" id="noResults" hidden>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <h3>لم يتم العثور على تخصصات</h3>
+                <p>جرّب البحث بكلمة أخرى أو اختر كلية مختلفة.</p>
+            </div>
+
+            <div class="page-error" id="pageError" hidden>
+                <i class="fa-solid fa-circle-exclamation"></i>
+                <h3>تعذر تحميل التخصصات</h3>
+                <p id="pageErrorText">
+                    حدث خطأ أثناء الاتصال بالخادم. حاول تحديث الصفحة.
+                </p>
+                <button type="button" id="retryButton" class="retry-button">
+                    إعادة المحاولة
+                </button>
+            </div>
+
+        </section>
+
+    </main>
 
     <!-- ================= FOOTER ================= -->
 
@@ -187,7 +185,7 @@
             <div class="footer-brand">
 
                 <a href="index.html" class="footer-logo">
-                    <img src="../Logo.png" alt="موّجه">
+                    <img src="/Logo.png" alt="موّجه">
                 </a>
 
                 <p class="footer-description">
@@ -296,8 +294,9 @@
 
     </footer>
 
-<script src="../JS/majors.js"></script>
-<script src="../JS/header-auth.js"></script>
+    <script src="../JS/majors.js"></script>
+    <script src="../JS/header-auth.js"></script>
 
 </body>
+
 </html>
