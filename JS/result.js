@@ -4,7 +4,7 @@ const majorsGrid = document.getElementById("majorsGrid");
 const downloadPdfButton = document.getElementById("downloadPdfButton");
 const retakeButton = document.getElementById("retakeButton");
 
-const API_URL = "http:///api/api";
+const API_URL = "/api";
 
 function showToast(message, type = "error") {
   let toast = document.getElementById("muwajehToast");

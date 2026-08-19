@@ -1,4 +1,4 @@
-const API_URL = "http:///api/api";
+const API_URL = "/api";
 
 async function loadMajorsCount() {
   const majorsCountElement = document.getElementById("majors-count");

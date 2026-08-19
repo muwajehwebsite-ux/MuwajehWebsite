@@ -12,7 +12,7 @@
  *   DELETE /api/wishlist/:majorId
  */
 
-const API_URL = window.MUWAJEH_API_URL || "http:///api/api";
+const API_URL = window.MUWAJEH_API_URL || "/api";
 
 let university = null;
 let faculties = [];

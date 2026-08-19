@@ -14,7 +14,7 @@
  */
 
 document.addEventListener("DOMContentLoaded", () => {
-  const API_URL = window.MUWAJEH_API_URL || "http:///api/api";
+  const API_URL = window.MUWAJEH_API_URL || "/api";
 
   const searchInput = document.getElementById("majorSearch");
 

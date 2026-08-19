@@ -1,4 +1,4 @@
-const API_URL = "http:///api/api";
+const API_URL = "/api";
 
 const DRAFT_STORAGE_KEY = "muwajeh_exam_answers";
 const ATTEMPT_STORAGE_KEY = "muwajeh_attempt_id";

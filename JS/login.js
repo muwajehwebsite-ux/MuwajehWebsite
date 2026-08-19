@@ -1,4 +1,4 @@
-const API_URL = "http:///api/api";
+const API_URL = "/api";
 
 const signupTab = document.getElementById("signupTab");
 
