@@ -11,7 +11,23 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 
-app.use(express.static(__dirname));
+
+// ======================================================
+// FRONTEND
+// ======================================================
+
+app.use(express.static(path.join(__dirname, "HTML")));
+
+app.use("/CSS", express.static(path.join(__dirname, "CSS")));
+
+app.use("/JS", express.static(path.join(__dirname, "JS")));
+
+app.use("/images", express.static(__dirname));
+
+
+// ======================================================
+// API ROUTES
+// ======================================================
 
 const authRoutes = require("./routes/auth");
 const universitiesRoutes = require("./routes/universities");
@@ -31,6 +47,11 @@ app.use("/api/assessments", assessmentsRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/major-details", majorDetailsRoutes);
 
+
+// ======================================================
+// API TEST
+// ======================================================
+
 app.get("/api/test", (req, res) => {
     res.json({
         success: true,
@@ -38,12 +59,42 @@ app.get("/api/test", (req, res) => {
     });
 });
 
+
+// ======================================================
+// PING
+// ======================================================
+
+app.get("/ping", (req, res) => {
+    res.status(200).send("pong");
+});
+
+
+// ======================================================
+// HOMEPAGE
+// ======================================================
+
+app.get("/", (req, res) => {
+    res.sendFile(
+        path.join(__dirname, "HTML", "index.html")
+    );
+});
+
+
+// ======================================================
+// 404
+// ======================================================
+
 app.use((req, res) => {
     res.status(404).json({
         success: false,
         message: "Endpoint not found"
     });
 });
+
+
+// ======================================================
+// ERROR HANDLER
+// ======================================================
 
 app.use((err, req, res, next) => {
     console.error("Unhandled server error:", err);
@@ -53,6 +104,11 @@ app.use((err, req, res, next) => {
         message: "Internal server error"
     });
 });
+
+
+// ======================================================
+// START SERVER
+// ======================================================
 
 app.listen(PORT, "0.0.0.0", () => {
     console.log(`Server running on port ${PORT}`);
