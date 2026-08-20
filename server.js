@@ -31,6 +31,10 @@ app.get("/Logo.png", (req, res) => {
     res.sendFile(path.join(__dirname, "Logo.png"));
 });
 
+app.get("/logo-gold.png", (req, res) => {
+    res.sendFile(path.join(__dirname, "logo-gold.png"));
+});
+
 app.get("/LogoIcon.png", (req, res) => {
     res.sendFile(path.join(__dirname, "LogoIcon.png"));
 });
