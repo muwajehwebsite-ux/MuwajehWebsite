@@ -187,7 +187,7 @@ body {
 .about-page {
   width: 100%;
   max-width: 1280px;
-  min-height: 1475px;
+  min-height: 0;
 
   margin: 0 auto;
   padding: 120px 48px 64px;
@@ -1288,7 +1288,7 @@ body {
 
 @media (min-width: 1001px) {
   .about-page {
-    min-height: 1580px;
+    min-height: 0;
   }
 }
 
@@ -1949,5 +1949,43 @@ body {
 
     .top-navigation .profile-button:not([hidden]) {
         display: flex !important;
+    }
+}
+
+/* =========================================================
+   FIX MOBILE STATS DIVIDERS
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .about-stats {
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 14px !important;
+    }
+
+    .about-stats .stat-divider {
+        display: block !important;
+
+        width: 60% !important;
+        min-width: 0 !important;
+        max-width: 60% !important;
+
+        height: 1px !important;
+        min-height: 1px !important;
+        max-height: 1px !important;
+
+        flex: 0 0 1px !important;
+
+        margin: 0 !important;
+        padding: 0 !important;
+
+        background: rgba(255, 255, 255, 0.16) !important;
+
+        border: 0 !important;
+        border-radius: 0 !important;
+
+        box-shadow: none !important;
     }
 }
