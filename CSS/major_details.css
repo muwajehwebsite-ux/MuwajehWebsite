@@ -2027,89 +2027,84 @@ button {
 }
 
 
-/* =========================================================
-   SHARED FOOTER — MOBILE
-   ========================================================= */
-
 @media (max-width: 900px) {
-  .site-footer {
-    margin-top: 45px !important;
-  }
-
   .footer-container {
-    width: calc(100% - 36px) !important;
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 28px 22px !important;
-    padding: 42px 0 34px !important;
+    grid-template-columns: 1.5fr 1fr 1fr;
+
+    gap: 40px;
   }
 
   .footer-brand {
-    grid-column: 1 / -1 !important;
-  }
+    grid-column: 1 / -1;
 
-  .footer-bottom-container {
-    width: calc(100% - 36px) !important;
-    min-height: 0 !important;
-    padding: 14px 0 16px !important;
+    max-width: 500px;
   }
 }
 
 @media (max-width: 600px) {
   .site-footer {
-    margin-top: 30px !important;
-    border-radius: 18px 18px 0 0 !important;
+    margin-top: 60px;
+
+    border-radius: 24px 24px 0 0;
   }
 
   .footer-container {
-    width: calc(100% - 24px) !important;
-    grid-template-columns: 1fr !important;
-    gap: 22px !important;
-    padding: 30px 0 24px !important;
+    width: calc(100% - 32px);
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 40px 24px;
+
+    padding: 45px 0 35px;
   }
 
   .footer-brand {
-    grid-column: auto !important;
-  }
-
-  .footer-logo img {
-    max-width: 112px !important;
+    grid-column: 1 / -1;
   }
 
   .footer-description {
-    font-size: 10px !important;
-    line-height: 1.75 !important;
+    font-size: 12px;
   }
 
   .footer-title {
-    font-size: 12px !important;
-    margin-bottom: 9px !important;
+    font-size: 16px;
   }
 
-  .footer-link,
-  .footer-contact-item {
-    font-size: 9px !important;
+  .footer-link {
+    font-size: 12px;
   }
 
   .footer-bottom-container {
-    width: calc(100% - 24px) !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    text-align: center !important;
-    padding: 12px 0 14px !important;
-  }
+    width: calc(100% - 32px);
 
-  .footer-bottom-links {
-    justify-content: center !important;
-    flex-wrap: wrap !important;
-    gap: 6px 12px !important;
-  }
+    min-height: auto;
 
-  .account-overlay {
-    padding: 76px 10px 10px !important;
-  }
+    padding: 20px 0;
 
-  .account-popup {
-    width: min(330px, calc(100vw - 20px)) !important;
-    padding: 22px 16px !important;
+    flex-direction: column;
+
+    justify-content: center;
+
+    text-align: center;
   }
+}
+
+/* =========================================================
+   MOBILE AUTH VISIBILITY — DO NOT OVERRIDE HIDDEN
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .top-navigation .login-button[hidden],
+    .top-navigation .profile-button[hidden] {
+        display: none !important;
+    }
+
+    .top-navigation .login-button:not([hidden]) {
+        display: flex !important;
+    }
+
+    .top-navigation .profile-button:not([hidden]) {
+        display: flex !important;
+    }
 }
