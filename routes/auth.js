@@ -1,7 +1,7 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 const crypto = require("crypto");
 
 const router = express.Router();
@@ -32,31 +32,9 @@ function hashCode(code) {
         .digest("hex");
 }
 
-function createTransporter() {
-    if (
-        !process.env.SMTP_HOST ||
-        !process.env.SMTP_USER ||
-        !process.env.SMTP_PASS
-    ) {
-        throw new Error(
-            "SMTP is not configured. Set SMTP_HOST, SMTP_USER and SMTP_PASS in .env"
-        );
-    }
-
-    return nodemailer.createTransport({
-        host: process.env.SMTP_HOST,
-        port: Number(process.env.SMTP_PORT || 587),
-        secure: String(process.env.SMTP_PORT || "587") === "465",
-        auth: {
-            user: process.env.SMTP_USER,
-            pass: process.env.SMTP_PASS
-        }
-    });
-}
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 async function sendVerificationEmail(email, code, purpose) {
-    const transporter = createTransporter();
-
     const isSignup = purpose === "signup";
 
     const subject = isSignup
@@ -67,9 +45,9 @@ async function sendVerificationEmail(email, code, purpose) {
         ? "تأكيد البريد الإلكتروني"
         : "استعادة كلمة المرور";
 
-    await transporter.sendMail({
-        from: process.env.SMTP_FROM || process.env.SMTP_USER,
-        to: email,
+    const { data, error } = await resend.emails.send({
+        from: "موّجه <noreply@muwajeh.com>",
+        to: [email],
         subject,
         text:
             `${title}\n\n` +
@@ -85,6 +63,7 @@ async function sendVerificationEmail(email, code, purpose) {
                 color: #0A1D38;
             ">
                 <h2>${title}</h2>
+
                 <p>رمز التحقق الخاص بك هو:</p>
 
                 <div style="
@@ -109,6 +88,12 @@ async function sendVerificationEmail(email, code, purpose) {
             </div>
         `
     });
+
+    if (error) {
+        throw new Error(error.message || "Resend email failed");
+    }
+
+    console.log("[EMAIL] Resend email sent:", data?.id);
 }
 
 async function createVerificationCode(client, email, purpose) {
