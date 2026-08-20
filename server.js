@@ -64,6 +64,7 @@ const questionsRoutes = require("./routes/questions");
 const assessmentsRoutes = require("./routes/assessments");
 const wishlistRoutes = require("./routes/wishlist");
 const majorDetailsRoutes = require("./routes/major-details");
+const statsRoutes = require("./routes/stats");
 
 app.use("/api/auth", authRoutes);
 app.use("/api/universities", universitiesRoutes);
@@ -73,6 +74,7 @@ app.use("/api/questions", questionsRoutes);
 app.use("/api/assessments", assessmentsRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/major-details", majorDetailsRoutes);
+app.use("/api/stats", statsRoutes);
 
 
 // ======================================================
