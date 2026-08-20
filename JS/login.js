@@ -78,13 +78,33 @@ signupTab.addEventListener("click", () => {
 });
 
 document.querySelectorAll(".password-toggle").forEach((button) => {
-  button.addEventListener("click", () => {
-    const input = document.getElementById(button.dataset.target);
-    const isPassword = input.type === "password";
+    button.addEventListener("click", () => {
+        const input = document.getElementById(button.dataset.target);
+        const isPassword = input.type === "password";
 
-    input.type = isPassword ? "text" : "password";
-    button.textContent = isPassword ? "إخفاء" : "إظهار";
-  });
+        input.type = isPassword ? "text" : "password";
+
+        button.innerHTML = isPassword
+            ? `
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2.5 12s3.2-5 9.5-5 9.5 5 9.5 5-3.2 5-9.5 5-9.5-5-9.5-5z"></path>
+                    <circle cx="12" cy="12" r="2.4"></circle>
+                </svg>
+              `
+            : `
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 3l18 18"></path>
+                    <path d="M2.5 12s3.2-5 9.5-5c1.5 0 2.9.3 4.2.8"></path>
+                    <path d="M21.5 12s-3.2 5-9.5 5c-1.5 0-2.9-.3-4.2-.8"></path>
+                    <path d="M10.2 10.2a2.5 2.5 0 0 0 3.6 3.6"></path>
+                </svg>
+              `;
+
+        button.setAttribute(
+            "aria-label",
+            isPassword ? "إخفاء كلمة المرور" : "إظهار كلمة المرور"
+        );
+    });
 });
 
 function getCodeInputs(container) {
