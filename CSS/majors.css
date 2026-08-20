@@ -2434,3 +2434,272 @@ input {
         display: flex !important;
     }
 }
+
+
+/* =========================================================
+   INDEX.CSS FOOTER — FINAL MATCH
+   This block intentionally comes last so older footer rules
+   in this file cannot override the index footer.
+   ========================================================= */
+
+.site-footer {
+    position: relative !important;
+    margin-top: 80px !important;
+    background: #F8FAFC !important;
+    color: #0A1D38 !important;
+    border-top: 1px solid #E4E8ED !important;
+    border-radius: 32px 32px 0 0 !important;
+    overflow: hidden !important;
+}
+
+.site-footer::before {
+    content: "" !important;
+    position: absolute !important;
+    top: -120px !important;
+    left: 50% !important;
+    width: 320px !important;
+    height: 320px !important;
+    transform: translateX(-50%) !important;
+    background: rgba(194, 148, 71, 0.06) !important;
+    border-radius: 50% !important;
+    pointer-events: none !important;
+}
+
+.footer-container {
+    position: relative !important;
+    z-index: 1 !important;
+    width: calc(100% - 48px) !important;
+    max-width: 1184px !important;
+    margin: 0 auto !important;
+    padding: 60px 0 48px !important;
+    display: grid !important;
+    grid-template-columns: 2fr 1fr 1.3fr 1.3fr !important;
+    gap: 60px !important;
+    direction: rtl !important;
+}
+
+.footer-brand {
+    max-width: 330px !important;
+}
+
+.footer-logo {
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.footer-logo img {
+    width: auto !important;
+    height: 58px !important;
+    object-fit: contain !important;
+}
+
+.footer-description {
+    margin: 20px 0 0 !important;
+    max-width: none !important;
+    color: #68717C !important;
+    font-family: "Cairo", sans-serif !important;
+    font-size: 13px !important;
+    line-height: 2 !important;
+    text-align: right !important;
+}
+
+.footer-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 0 !important;
+}
+
+.footer-title {
+    position: relative !important;
+    margin: 0 0 22px !important;
+    color: #0A1D38 !important;
+    font-family: "Tajawal", sans-serif !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    line-height: 1.4 !important;
+}
+
+.footer-title::after {
+    content: "" !important;
+    display: block !important;
+    width: 28px !important;
+    height: 3px !important;
+    margin-top: 9px !important;
+    background: #C29447 !important;
+    border-radius: 999px !important;
+}
+
+.footer-link {
+    margin-bottom: 11px !important;
+    color: #68717C !important;
+    font-family: "Cairo", sans-serif !important;
+    font-size: 13px !important;
+    line-height: 1.7 !important;
+    text-decoration: none !important;
+    transition: color 180ms ease, transform 180ms ease !important;
+}
+
+.footer-link:hover {
+    color: #C29447 !important;
+    transform: translateX(-3px) !important;
+}
+
+.footer-contact-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin-bottom: 14px !important;
+    color: #68717C !important;
+    font-family: "Cairo", sans-serif !important;
+    font-size: 12px !important;
+    text-decoration: none !important;
+    transition: color 180ms ease !important;
+}
+
+.footer-contact-item:hover {
+    color: #0A1D38 !important;
+}
+
+.footer-icon {
+    width: 30px !important;
+    height: 30px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex-shrink: 0 !important;
+    background: rgba(194, 148, 71, 0.12) !important;
+    color: #C29447 !important;
+    border: 1px solid rgba(194, 148, 71, 0.15) !important;
+    border-radius: 50% !important;
+    font-size: 12px !important;
+}
+
+.footer-socials {
+    display: flex !important;
+    align-items: center !important;
+    gap: 9px !important;
+    margin-top: 10px !important;
+}
+
+.footer-socials a {
+    width: 34px !important;
+    height: 34px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: #FFFFFF !important;
+    color: #0A1D38 !important;
+    border: 1px solid #DDE2E8 !important;
+    border-radius: 50% !important;
+    font-size: 13px !important;
+    text-decoration: none !important;
+    transition:
+        background-color 180ms ease,
+        color 180ms ease,
+        border-color 180ms ease,
+        transform 180ms ease !important;
+}
+
+.footer-socials a:hover {
+    background: #C29447 !important;
+    color: #FFFFFF !important;
+    border-color: #C29447 !important;
+    transform: translateY(-2px) !important;
+}
+
+.footer-bottom {
+    position: relative !important;
+    z-index: 1 !important;
+    border-top: 1px solid #E1E5EA !important;
+}
+
+.footer-bottom-container {
+    width: calc(100% - 48px) !important;
+    max-width: 1184px !important;
+    min-height: 64px !important;
+    margin: 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 20px !important;
+    direction: rtl !important;
+}
+
+.footer-bottom p {
+    margin: 0 !important;
+    color: #8A929D !important;
+    font-family: "Cairo", sans-serif !important;
+    font-size: 11px !important;
+}
+
+.footer-bottom-links {
+    display: flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    margin: 0 !important;
+    color: #8A929D !important;
+    font-family: "Cairo", sans-serif !important;
+    font-size: 11px !important;
+}
+
+.footer-bottom-links a {
+    color: inherit !important;
+    text-decoration: none !important;
+    transition: color 180ms ease !important;
+}
+
+.footer-bottom-links a:hover {
+    color: #C29447 !important;
+}
+
+@media (max-width: 900px) {
+    .footer-container {
+        grid-template-columns: 1.5fr 1fr 1fr !important;
+        gap: 40px !important;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1 !important;
+        max-width: 500px !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .site-footer {
+        margin-top: 60px !important;
+        border-radius: 24px 24px 0 0 !important;
+    }
+
+    .footer-container {
+        width: calc(100% - 32px) !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 40px 24px !important;
+        padding: 45px 0 35px !important;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1 !important;
+    }
+
+    .footer-description {
+        font-size: 12px !important;
+    }
+
+    .footer-title {
+        font-size: 16px !important;
+    }
+
+    .footer-link {
+        font-size: 12px !important;
+    }
+
+    .footer-bottom-container {
+        width: calc(100% - 32px) !important;
+        min-height: auto !important;
+        padding: 20px 0 !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+        text-align: center !important;
+    }
+}
