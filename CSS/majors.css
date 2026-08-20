@@ -1998,22 +1998,444 @@ input {
   }
 }
 
+
 /* =========================================================
-   MOBILE AUTH VISIBILITY — DO NOT OVERRIDE HIDDEN
+   MAJORS + MAJOR DETAILS
+   SHARED PROFILE + FOOTER COMPONENTS
    ========================================================= */
 
-@media (max-width: 800px) {
+.site-footer {
+  position: relative !important;
+  margin-top: 80px !important;
+  background: #f8fafc !important;
+  color: var(--color-primary, #0a1d38) !important;
+  border-top: 1px solid #e4e8ed !important;
+  border-radius: 32px 32px 0 0 !important;
+  overflow: hidden !important;
+}
 
-    .top-navigation .login-button[hidden],
-    .top-navigation .profile-button[hidden] {
-        display: none !important;
-    }
+.site-footer::before {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  pointer-events: none !important;
+}
 
-    .top-navigation .login-button:not([hidden]) {
-        display: flex !important;
-    }
+.footer-container {
+  position: relative !important;
+  z-index: 1 !important;
+  width: calc(100% - 48px) !important;
+  max-width: 1184px !important;
+  margin: 0 auto !important;
+  padding: 60px 0 48px !important;
+  display: grid !important;
+  grid-template-columns: 2fr 1fr 1.3fr 1.3fr !important;
+  gap: 60px !important;
+  direction: rtl !important;
+}
 
-    .top-navigation .profile-button:not([hidden]) {
-        display: flex !important;
-    }
+.footer-bottom-container {
+  width: calc(100% - 48px) !important;
+  max-width: 1184px !important;
+  min-height: 64px !important;
+  margin: 0 auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 20px !important;
+  direction: rtl !important;
+}
+
+.account-overlay {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 9999 !important;
+  display: flex !important;
+  align-items: flex-start !important;
+  justify-content: center !important;
+  padding-top: 95px !important;
+}
+
+.account-overlay[hidden] {
+  display: none !important;
+}
+
+.account-popup {
+  position: relative !important;
+  top: auto !important;
+  left: auto !important;
+  width: 360px !important;
+  max-width: calc(100% - 30px) !important;
+  padding: 30px !important;
+  background: #ffffff !important;
+  border-radius: 20px !important;
+  box-shadow: 0 15px 45px rgba(10, 29, 56, 0.20) !important;
+  text-align: center !important;
+  animation: accountPopupIn 0.2s ease !important;
+}
+
+.account-close {
+  position: absolute !important;
+  top: 12px !important;
+  left: 12px !important;
+  width: 32px !important;
+  height: 32px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #f1f3f5 !important;
+  color: #555 !important;
+  font-size: 22px !important;
+  line-height: 1 !important;
+  cursor: pointer !important;
+}
+
+.account-close:hover {
+  background: #e5e7eb !important;
+}
+
+.account-avatar {
+  width: 64px !important;
+  height: 64px !important;
+  margin: 0 auto 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  border-radius: 50% !important;
+  background: #0a1d38 !important;
+  color: #c29447 !important;
+  font-size: 24px !important;
+}
+
+.account-popup h2 {
+  margin: 0 0 24px !important;
+  color: #0a1d38 !important;
+  font-family: "Tajawal", sans-serif !important;
+  font-size: 25px !important;
+}
+
+.account-info {
+  margin-bottom: 22px !important;
+  border: 1px solid #e1e5ea !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.account-info-row {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 3px !important;
+  padding: 13px 15px !important;
+  text-align: right !important;
+}
+
+.account-info-row + .account-info-row {
+  border-top: 1px solid #e1e5ea !important;
+}
+
+.account-info-row span {
+  color: #6b7280 !important;
+  font-size: 11px !important;
+}
+
+.account-info-row strong {
+  width: 100% !important;
+  color: #0a1d38 !important;
+  font-size: 14px !important;
+  overflow-wrap: anywhere !important;
+}
+
+.logout-button {
+  width: 100% !important;
+  height: 46px !important;
+  margin-top: 0 !important;
+  border: none !important;
+  border-radius: 999px !important;
+  background: #0a1d38 !important;
+  color: #ffffff !important;
+  font-family: "Cairo", sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  cursor: pointer !important;
+  transition: 0.2s ease !important;
+}
+
+.logout-button:hover {
+  background: #c29447 !important;
+  color: #0a1d38 !important;
+}
+
+/* =========================================================
+   FINAL MOBILE CARDS — MAJORS
+   One card per row, compact and readable
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .majors-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .major-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    padding: 20px !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .majors-grid {
+    width: 100% !important;
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .major-card {
+    width: 100% !important;
+    min-height: 0 !important;
+    padding: 16px !important;
+    border-radius: 15px !important;
+    box-sizing: border-box !important;
+  }
+
+  .major-card-content {
+    width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  .major-card h3 {
+    font-size: 18px !important;
+    line-height: 1.5 !important;
+  }
+
+  .major-card p {
+    font-size: 11px !important;
+    line-height: 1.75 !important;
+  }
+
+  .details-link {
+    width: 100% !important;
+    min-height: 40px !important;
+    box-sizing: border-box !important;
+    font-size: 10px !important;
+  }
+
+  .favorite-button {
+    width: 34px !important;
+    height: 34px !important;
+  }
+}
+
+
+/* =========================================================
+   FINAL MOBILE CARDS — MAJOR DETAILS
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .major-page {
+    width: min(100%, calc(100% - 32px)) !important;
+  }
+
+  .detail-panel {
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .semester-grid,
+  .admission-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .admission-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .major-page {
+    width: calc(100% - 20px) !important;
+    padding-top: 82px !important;
+    padding-bottom: 35px !important;
+  }
+
+  .detail-tabs {
+    width: 100% !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none !important;
+    box-sizing: border-box !important;
+  }
+
+  .detail-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .detail-tab {
+    flex: 0 0 auto !important;
+    min-width: 110px !important;
+    padding: 9px 14px !important;
+    font-size: 11px !important;
+    white-space: nowrap !important;
+  }
+
+  .detail-panel {
+    width: 100% !important;
+    padding: 16px 12px !important;
+    border-radius: 0 0 15px 15px !important;
+  }
+
+  .overview-content {
+    padding: 18px 12px 22px !important;
+  }
+
+  .overview-content h2 {
+    font-size: 20px !important;
+    line-height: 1.5 !important;
+  }
+
+  .overview-content p {
+    font-size: 11px !important;
+    line-height: 1.9 !important;
+  }
+
+  .year-tabs {
+    width: 100% !important;
+    overflow-x: auto !important;
+    justify-content: flex-start !important;
+    scrollbar-width: none !important;
+  }
+
+  .year-tabs::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .year-tab {
+    flex: 0 0 auto !important;
+    min-width: 95px !important;
+    font-size: 10px !important;
+  }
+
+  .semester-grid,
+  .admission-grid {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .semester,
+  .admission-card {
+    width: 100% !important;
+    min-width: 0 !important;
+    box-sizing: border-box !important;
+  }
+
+  .admission-card {
+    min-height: 0 !important;
+    padding: 16px !important;
+    border-radius: 14px !important;
+  }
+
+  .admission-card h3 {
+    font-size: 15px !important;
+  }
+
+  .fee-label {
+    font-size: 10px !important;
+  }
+
+  .fee-value {
+    font-size: 19px !important;
+  }
+}
+
+
+/* =========================================================
+   SHARED FOOTER — MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .site-footer {
+    margin-top: 45px !important;
+  }
+
+  .footer-container {
+    width: calc(100% - 36px) !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 28px 22px !important;
+    padding: 42px 0 34px !important;
+  }
+
+  .footer-brand {
+    grid-column: 1 / -1 !important;
+  }
+
+  .footer-bottom-container {
+    width: calc(100% - 36px) !important;
+    min-height: 0 !important;
+    padding: 14px 0 16px !important;
+  }
+}
+
+@media (max-width: 600px) {
+  .site-footer {
+    margin-top: 30px !important;
+    border-radius: 18px 18px 0 0 !important;
+  }
+
+  .footer-container {
+    width: calc(100% - 24px) !important;
+    grid-template-columns: 1fr !important;
+    gap: 22px !important;
+    padding: 30px 0 24px !important;
+  }
+
+  .footer-brand {
+    grid-column: auto !important;
+  }
+
+  .footer-logo img {
+    max-width: 112px !important;
+  }
+
+  .footer-description {
+    font-size: 10px !important;
+    line-height: 1.75 !important;
+  }
+
+  .footer-title {
+    font-size: 12px !important;
+    margin-bottom: 9px !important;
+  }
+
+  .footer-link,
+  .footer-contact-item {
+    font-size: 9px !important;
+  }
+
+  .footer-bottom-container {
+    width: calc(100% - 24px) !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    padding: 12px 0 14px !important;
+  }
+
+  .footer-bottom-links {
+    justify-content: center !important;
+    flex-wrap: wrap !important;
+    gap: 6px 12px !important;
+  }
+
+  .account-overlay {
+    padding: 76px 10px 10px !important;
+  }
+
+  .account-popup {
+    width: min(330px, calc(100vw - 20px)) !important;
+    padding: 22px 16px !important;
+  }
 }
