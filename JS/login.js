@@ -60,8 +60,8 @@ function switchMode(mode) {
     : "مرحباً بك مجدداً! أدخل بياناتك لمتابعة رحلتك";
 
   document.getElementById("brandingTitle").textContent = signup
-    ? "لديك حساب بالفعل؟ 👋"
-    : "أول مرة تنضم إلينا؟ 🚀";
+    ? "لديك حساب بالفعل؟"
+    : "أول مرة تنضم إلينا؟";
 
   document.getElementById("brandingDescription").textContent = signup
     ? "سجّل دخولك للعودة إلى حسابك ومتابعة رحلتك نحو التخصص الأنسب."
