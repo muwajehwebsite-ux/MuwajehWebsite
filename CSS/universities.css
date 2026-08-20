@@ -1480,3 +1480,364 @@ img {
   background: #c29447;
   color: #0a1d38;
 }
+
+/* =========================================================
+   FINAL MOBILE HEADER — ALIGNED
+   Header only. Uses absolute centering so the hamburger,
+   logo and login/profile are ALWAYS on the exact same row.
+   ========================================================= */
+
+.mobile-menu-button {
+  display: none;
+}
+
+@media (max-width: 800px) {
+
+  .top-navigation {
+    position: absolute !important;
+
+    top: 14px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+
+    width: calc(100% - 28px) !important;
+    max-width: none !important;
+    height: 58px !important;
+
+    padding: 0 !important;
+    margin: 0 !important;
+
+    display: block !important;
+
+    box-sizing: border-box !important;
+
+    z-index: 1000 !important;
+  }
+
+
+  /* =====================================================
+     HAMBURGER — RIGHT
+     ===================================================== */
+
+  .top-navigation .mobile-menu-button {
+    position: absolute !important;
+
+    top: 50% !important;
+    right: 12px !important;
+
+    transform: translateY(-50%) !important;
+
+    width: 40px !important;
+    height: 40px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    border: 0 !important;
+    outline: 0 !important;
+    background: transparent !important;
+
+    color: #0a1d38 !important;
+
+    font-size: 21px !important;
+    line-height: 1 !important;
+
+    cursor: pointer !important;
+
+    z-index: 1003 !important;
+  }
+
+
+  /* =====================================================
+     LOGO — EXACT CENTER OF HEADER
+     ===================================================== */
+
+  .top-navigation .logo {
+    position: absolute !important;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    z-index: 1002 !important;
+  }
+
+  .top-navigation .logo img {
+    display: block !important;
+
+    width: auto !important;
+    height: 42px !important;
+    max-width: 120px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    object-fit: contain !important;
+  }
+
+
+  /* =====================================================
+     LOGIN / PROFILE — LEFT
+     ===================================================== */
+
+  .top-navigation .auth-header-area {
+    position: absolute !important;
+
+    top: 50% !important;
+    left: 12px !important;
+
+    transform: translateY(-50%) !important;
+
+    width: auto !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    gap: 7px !important;
+
+    z-index: 1003 !important;
+  }
+
+
+  /* Login */
+
+  .top-navigation .login-button {
+    width: auto !important;
+    height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 14px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    font-size: 13px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+  }
+
+
+  /* Profile */
+
+  .top-navigation .profile-button {
+    width: 38px !important;
+    height: 38px !important;
+
+    margin: 0 !important;
+    padding: 0 !important;
+
+    flex: 0 0 38px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+  }
+
+
+  /* =====================================================
+     HIDE DESKTOP NAVIGATION
+     ===================================================== */
+
+  .top-navigation .navigation-links {
+    display: none !important;
+  }
+
+
+  /* =====================================================
+     OPEN MENU — DIRECTLY UNDER HEADER
+     ===================================================== */
+
+  .top-navigation.mobile-menu-open .navigation-links {
+    position: absolute !important;
+
+    top: 100% !important;
+    right: 0 !important;
+    left: 0 !important;
+
+    width: 100% !important;
+    height: auto !important;
+
+    margin: 0 !important;
+    padding: 7px !important;
+
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: stretch !important;
+
+    gap: 2px !important;
+
+    background: #ffffff !important;
+
+    border: 1px solid rgba(10, 29, 56, 0.08) !important;
+    border-top: 0 !important;
+
+    border-radius: 0 0 16px 16px !important;
+
+    box-shadow: 0 14px 32px rgba(10, 29, 56, 0.14) !important;
+
+    z-index: 1001 !important;
+  }
+
+
+  /* =====================================================
+     MOBILE NAV LINKS
+     ===================================================== */
+
+  .top-navigation.mobile-menu-open
+  .navigation-links
+  .nav-link {
+    width: 100% !important;
+    height: 40px !important;
+    min-height: 40px !important;
+
+    margin: 0 !important;
+    padding: 0 10px !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    box-sizing: border-box !important;
+
+    border-radius: 9px !important;
+
+    font-size: 12px !important;
+    line-height: 1 !important;
+
+    white-space: nowrap !important;
+
+    color: #4b4f55 !important;
+  }
+
+  .top-navigation.mobile-menu-open
+  .navigation-links
+  .nav-link:hover {
+    background: rgba(194, 148, 71, 0.10) !important;
+    color: #0a1d38 !important;
+  }
+
+  .top-navigation.mobile-menu-open
+  .navigation-links
+  .nav-link.active {
+    background: rgba(194, 148, 71, 0.12) !important;
+    color: #c29447 !important;
+    font-weight: 700 !important;
+  }
+
+  .top-navigation.mobile-menu-open
+  .navigation-links
+  .nav-link.active::after {
+    display: none !important;
+  }
+
+
+  /* =====================================================
+     PROFILE POPUP
+     ===================================================== */
+
+  .account-overlay {
+    padding-top: 82px !important;
+  }
+
+  .account-popup {
+    width: 340px !important;
+    max-width: calc(100% - 24px) !important;
+  }
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+   ========================================================= */
+
+@media (max-width: 420px) {
+
+  .top-navigation {
+    top: 11px !important;
+    width: calc(100% - 20px) !important;
+    height: 54px !important;
+  }
+
+  .top-navigation .mobile-menu-button {
+    right: 9px !important;
+
+    width: 36px !important;
+    height: 36px !important;
+
+    font-size: 19px !important;
+  }
+
+  .top-navigation .logo img {
+    height: 38px !important;
+    max-width: 105px !important;
+  }
+
+  .top-navigation .auth-header-area {
+    left: 9px !important;
+    gap: 5px !important;
+  }
+
+  .top-navigation .login-button {
+    height: 36px !important;
+    padding: 0 11px !important;
+    font-size: 11px !important;
+  }
+
+  .top-navigation .profile-button {
+    width: 36px !important;
+    height: 36px !important;
+    flex-basis: 36px !important;
+  }
+
+  .top-navigation.mobile-menu-open
+  .navigation-links
+  .nav-link {
+    height: 38px !important;
+    min-height: 38px !important;
+    font-size: 11px !important;
+  }
+}
+
+/* =========================================================
+   MOBILE AUTH VISIBILITY — DO NOT OVERRIDE HIDDEN
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+    .top-navigation .login-button[hidden],
+    .top-navigation .profile-button[hidden] {
+        display: none !important;
+    }
+
+    .top-navigation .login-button:not([hidden]) {
+        display: flex !important;
+    }
+
+    .top-navigation .profile-button:not([hidden]) {
+        display: flex !important;
+    }
+}
