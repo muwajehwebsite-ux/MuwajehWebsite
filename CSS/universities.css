@@ -473,7 +473,7 @@ img {
 
   gap: 12px;
 
-  direction: rtl;
+  direction: ltr;
 }
 
 .detail-text {
@@ -1087,7 +1087,7 @@ img {
   }
 }
 
-@media (max-width: 850px) {
+@media (max-width: 1200px) {
   .universities-grid {
     height: auto;
 

@@ -6,66 +6,59 @@ const retakeButton = document.getElementById("retakeButton");
 
 const API_URL = "/api";
 
-
 // ======================================================
 // TOAST
 // ======================================================
 
 function showToast(message, type = "error") {
-    let toast = document.getElementById("muwajehToast");
+  let toast = document.getElementById("muwajehToast");
 
-    if (!toast) {
-        toast = document.createElement("div");
-        toast.id = "muwajehToast";
-        toast.className = "muwajeh-toast";
+  if (!toast) {
+    toast = document.createElement("div");
+    toast.id = "muwajehToast";
+    toast.className = "muwajeh-toast";
 
-        document.body.appendChild(toast);
-    }
+    document.body.appendChild(toast);
+  }
 
-    const icon =
-        type === "success"
-            ? "fa-circle-check"
-            : "fa-circle-exclamation";
+  const icon = type === "success" ? "fa-circle-check" : "fa-circle-exclamation";
 
-    toast.className = `muwajeh-toast ${type}`;
+  toast.className = `muwajeh-toast ${type}`;
 
-    toast.innerHTML = `
+  toast.innerHTML = `
         <i class="fa-solid ${icon}"></i>
         <span>${message}</span>
     `;
 
-    requestAnimationFrame(() => {
-        toast.classList.add("show");
-    });
+  requestAnimationFrame(() => {
+    toast.classList.add("show");
+  });
 
-    clearTimeout(toast._timer);
+  clearTimeout(toast._timer);
 
-    toast._timer = setTimeout(() => {
-        toast.classList.remove("show");
-    }, 2800);
+  toast._timer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 2800);
 }
-
 
 // ======================================================
 // CONFIRM MODAL
 // ======================================================
 
 function showConfirmModal(message) {
-    return new Promise((resolve) => {
+  return new Promise((resolve) => {
+    const existing = document.getElementById("muwajehConfirm");
 
-        const existing =
-            document.getElementById("muwajehConfirm");
+    if (existing) {
+      existing.remove();
+    }
 
-        if (existing) {
-            existing.remove();
-        }
+    const modal = document.createElement("div");
 
-        const modal = document.createElement("div");
+    modal.id = "muwajehConfirm";
+    modal.className = "muwajeh-confirm-overlay";
 
-        modal.id = "muwajehConfirm";
-        modal.className = "muwajeh-confirm-overlay";
-
-        modal.innerHTML = `
+    modal.innerHTML = `
             <div class="muwajeh-confirm-box" dir="rtl">
 
                 <div class="muwajeh-confirm-icon">
@@ -97,346 +90,241 @@ function showConfirmModal(message) {
             </div>
         `;
 
-        document.body.appendChild(modal);
+    document.body.appendChild(modal);
 
-        const cancelButton =
-            modal.querySelector(".muwajeh-confirm-cancel");
+    const cancelButton = modal.querySelector(".muwajeh-confirm-cancel");
 
-        const confirmButton =
-            modal.querySelector(".muwajeh-confirm-ok");
+    const confirmButton = modal.querySelector(".muwajeh-confirm-ok");
 
+    function close(value) {
+      modal.classList.remove("show");
 
-        function close(value) {
+      setTimeout(() => {
+        modal.remove();
+      }, 200);
 
-            modal.classList.remove("show");
+      resolve(value);
+    }
 
-            setTimeout(() => {
-                modal.remove();
-            }, 200);
+    cancelButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
 
-            resolve(value);
-        }
-
-
-        cancelButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            close(false);
-        });
-
-
-        confirmButton.addEventListener("click", (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-
-            close(true);
-        });
-
-
-        modal.addEventListener("click", (event) => {
-
-            if (event.target === modal) {
-                close(false);
-            }
-
-        });
-
-
-        requestAnimationFrame(() => {
-            modal.classList.add("show");
-        });
-
+      close(false);
     });
-}
 
+    confirmButton.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      close(true);
+    });
+
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) {
+        close(false);
+      }
+    });
+
+    requestAnimationFrame(() => {
+      modal.classList.add("show");
+    });
+  });
+}
 
 // ======================================================
 // LOAD RESULTS
 // ======================================================
 
 async function loadResults() {
+  const token =
+    localStorage.getItem("muwajeh_token") ||
+    sessionStorage.getItem("muwajeh_token");
 
-    const token =
-        localStorage.getItem("muwajeh_token") ||
-        sessionStorage.getItem("muwajeh_token");
+  if (!token) {
+    window.location.replace("login.html");
+    return null;
+  }
 
+  try {
+    const response = await fetch(`${API_URL}/assessments/current`, {
+      method: "GET",
 
-    if (!token) {
-        window.location.replace("login.html");
-        return null;
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (response.status === 401) {
+      localStorage.removeItem("muwajeh_token");
+      localStorage.removeItem("muwajeh_user");
+
+      sessionStorage.removeItem("muwajeh_token");
+
+      window.location.replace("login.html");
+
+      return null;
     }
 
-
-    try {
-
-        const response =
-            await fetch(`${API_URL}/assessments/current`, {
-
-                method: "GET",
-
-                headers: {
-                    Authorization: `Bearer ${token}`
-                }
-
-            });
-
-
-        if (response.status === 401) {
-
-            localStorage.removeItem("muwajeh_token");
-            localStorage.removeItem("muwajeh_user");
-
-            sessionStorage.removeItem("muwajeh_token");
-
-            window.location.replace("login.html");
-
-            return null;
-        }
-
-
-        if (!response.ok) {
-            throw new Error(
-                `Results request failed: ${response.status}`
-            );
-        }
-
-
-        const result = await response.json();
-
-
-        if (!result.success) {
-            throw new Error(
-                result.message || "Failed to load results"
-            );
-        }
-
-
-        if (result.status !== "completed") {
-
-            window.location.replace("test.html");
-
-            return null;
-        }
-
-
-        const data = {
-
-            attemptId:
-                result.data.attempt.id,
-
-            results:
-                result.data.results
-
-        };
-
-
-        sessionStorage.setItem(
-            RESULT_KEY,
-            JSON.stringify(data)
-        );
-
-
-        return data;
-
-    } catch (error) {
-
-        console.error(
-            "Error loading results:",
-            error
-        );
-
-        showError(
-            "تعذر تحميل نتيجة الاختبار."
-        );
-
-        return null;
+    if (!response.ok) {
+      throw new Error(`Results request failed: ${response.status}`);
     }
+
+    const result = await response.json();
+
+    if (!result.success) {
+      throw new Error(result.message || "Failed to load results");
+    }
+
+    if (result.status !== "completed") {
+      window.location.replace("test.html");
+
+      return null;
+    }
+
+    const data = {
+      attemptId: result.data.attempt.id,
+
+      results: result.data.results,
+    };
+
+    sessionStorage.setItem(RESULT_KEY, JSON.stringify(data));
+
+    return data;
+  } catch (error) {
+    console.error("Error loading results:", error);
+
+    showError("تعذر تحميل نتيجة الاختبار.");
+
+    return null;
+  }
 }
-
 
 // ======================================================
 // RENDER RESULTS
 // ======================================================
 
 function renderResults(results) {
+  if (!Array.isArray(results) || results.length === 0) {
+    showError("لم يتم العثور على تخصصات مناسبة.");
 
-    if (
-        !Array.isArray(results) ||
-        results.length === 0
-    ) {
+    return;
+  }
 
-        showError(
-            "لم يتم العثور على تخصصات مناسبة."
-        );
+  majorsGrid.innerHTML = "";
 
-        return;
-    }
+  results.slice(0, 6).forEach(function (result, index) {
+    const score = Number(result.compatibilityScore);
 
+    const card = document.createElement("article");
 
-    majorsGrid.innerHTML = "";
+    card.className = index === 0 ? "major-card top-card" : "major-card";
 
+    const rank = document.createElement("span");
 
-    results
-        .slice(0, 6)
-        .forEach(function (result, index) {
+    rank.className = "rank-number";
 
-            const score =
-                Number(result.compatibilityScore);
+    rank.textContent = index + 1;
 
+    const content = document.createElement("div");
 
-            const card =
-                document.createElement("article");
+    content.className = "major-content";
 
-            card.className =
-                index === 0
-                    ? "major-card top-card"
-                    : "major-card";
+    const scoreRing = document.createElement("div");
 
+    scoreRing.className = "score-ring";
 
-            const rank =
-                document.createElement("span");
+    scoreRing.style.setProperty("--score", Math.round(score));
 
-            rank.className =
-                "rank-number";
+    scoreRing.style.setProperty(
+      "--ring-color",
+      score >= 90 ? "#F0AC3A" : "#7D570D",
+    );
 
-            rank.textContent =
-                index + 1;
+    scoreRing.innerHTML = `
+    <span>
+        ${Math.round(score)}%
+    </span>
+`;
 
+    const info = document.createElement("div");
 
-            const content =
-                document.createElement("div");
+    info.className = "major-info";
 
-            content.className =
-                "major-content";
+    const title = document.createElement("h2");
 
+    title.textContent = result.nameAr || "تخصص غير معروف";
 
-            const scoreRing =
-                document.createElement("div");
+    if (index === 0) {
+      const label = document.createElement("span");
 
-            scoreRing.className =
-                `score-ring score-${Math.round(score)}`;
+      label.className = "score-label highlight";
 
-
-            scoreRing.innerHTML = `
-                <span>
-                    ${Math.round(score)}%
-                </span>
-            `;
-
-
-            const info =
-                document.createElement("div");
-
-            info.className =
-                "major-info";
-
-
-            const title =
-                document.createElement("h2");
-
-            title.textContent =
-                result.nameAr ||
-                "تخصص غير معروف";
-
-
-            if (index === 0) {
-
-                const label =
-                    document.createElement("span");
-
-                label.className =
-                    "score-label highlight";
-
-
-                label.innerHTML = `
+      label.innerHTML = `
                     <i class="fa-solid fa-star"></i>
                     توافق ممتاز
                 `;
 
+      info.appendChild(title);
+      info.appendChild(label);
+    } else {
+      const track = document.createElement("div");
 
-                info.appendChild(title);
-                info.appendChild(label);
+      track.className = "score-track";
 
-            } else {
+      const fill = document.createElement("div");
 
-                const track =
-                    document.createElement("div");
+      fill.style.width = `${score}%`;
 
-                track.className =
-                    "score-track";
+      track.appendChild(fill);
 
+      const scoreText = document.createElement("span");
 
-                const fill =
-                    document.createElement("div");
+      scoreText.className = "score-text";
 
-                fill.style.width =
-                    `${score}%`;
+      scoreText.textContent = `${Math.round(score)}% - ${getScoreLabel(score)}`;
 
+      info.appendChild(title);
+      info.appendChild(track);
+      info.appendChild(scoreText);
+    }
 
-                track.appendChild(fill);
+    content.appendChild(scoreRing);
+    content.appendChild(info);
 
+    card.appendChild(rank);
+    card.appendChild(content);
 
-                const scoreText =
-                    document.createElement("span");
-
-                scoreText.className =
-                    "score-text";
-
-
-                scoreText.textContent =
-                    `${Math.round(score)}% - ${getScoreLabel(score)}`;
-
-
-                info.appendChild(title);
-                info.appendChild(track);
-                info.appendChild(scoreText);
-            }
-
-
-            content.appendChild(scoreRing);
-            content.appendChild(info);
-
-
-            card.appendChild(rank);
-            card.appendChild(content);
-
-
-            majorsGrid.appendChild(card);
-
-        });
+    majorsGrid.appendChild(card);
+  });
 }
-
 
 // ======================================================
 // SCORE LABEL
 // ======================================================
 
 function getScoreLabel(score) {
+  if (score >= 90) {
+    return "توافق ممتاز";
+  }
 
-    if (score >= 90) {
-        return "توافق ممتاز";
-    }
+  if (score >= 80) {
+    return "توافق جيد جداً";
+  }
 
-    if (score >= 80) {
-        return "توافق جيد جداً";
-    }
+  if (score >= 70) {
+    return "توافق جيد";
+  }
 
-    if (score >= 70) {
-        return "توافق جيد";
-    }
-
-    return "توافق متوسط";
+  return "توافق متوسط";
 }
-
 
 // ======================================================
 // ERROR
 // ======================================================
 
 function showError(message) {
-
-    majorsGrid.innerHTML = `
+  majorsGrid.innerHTML = `
         <article class="major-card">
 
             <div class="major-content">
@@ -455,375 +343,217 @@ function showError(message) {
     `;
 }
 
-
 // ======================================================
 // RETAKE EXAM
 // ======================================================
 
 if (retakeButton) {
+  retakeButton.type = "button";
 
-    retakeButton.type = "button";
+  retakeButton.addEventListener("click", async function (event) {
+    // VERY IMPORTANT:
+    // Prevent form submission / page refresh.
+    event.preventDefault();
+    event.stopPropagation();
 
+    const token =
+      localStorage.getItem("muwajeh_token") ||
+      sessionStorage.getItem("muwajeh_token");
 
-    retakeButton.addEventListener(
-        "click",
-        async function (event) {
+    if (!token) {
+      window.location.href = "login.html";
 
-            // VERY IMPORTANT:
-            // Prevent form submission / page refresh.
-            event.preventDefault();
-            event.stopPropagation();
+      return;
+    }
 
-
-            const token =
-                localStorage.getItem("muwajeh_token") ||
-                sessionStorage.getItem("muwajeh_token");
-
-
-            if (!token) {
-
-                window.location.href =
-                    "login.html";
-
-                return;
-            }
-
-
-            const confirmed =
-                await showConfirmModal(
-                    "سيتم حذف نتيجتك الحالية والبدء باختبار جديد. هل تريد المتابعة؟"
-                );
-
-
-            if (!confirmed) {
-                return;
-            }
-
-
-            retakeButton.disabled = true;
-
-            retakeButton.textContent =
-                "جاري تجهيز الاختبار...";
-
-
-            try {
-
-                const response =
-                    await fetch(
-                        `${API_URL}/assessments/current`,
-                        {
-                            method: "DELETE",
-
-                            headers: {
-                                Authorization:
-                                    `Bearer ${token}`
-                            }
-                        }
-                    );
-
-
-                const result =
-                    await response.json();
-
-
-                if (response.status === 401) {
-
-                    localStorage.removeItem(
-                        "muwajeh_token"
-                    );
-
-                    localStorage.removeItem(
-                        "muwajeh_user"
-                    );
-
-                    sessionStorage.removeItem(
-                        "muwajeh_token"
-                    );
-
-                    window.location.href =
-                        "login.html";
-
-                    return;
-                }
-
-
-                if (
-                    !response.ok ||
-                    !result.success
-                ) {
-
-                    throw new Error(
-                        result.message ||
-                        "Failed to delete previous exam"
-                    );
-                }
-
-
-                // Clear old exam data.
-
-                localStorage.removeItem(
-                    "muwajeh_exam_answers"
-                );
-
-                localStorage.removeItem(
-                    "muwajeh_attempt_id"
-                );
-
-                sessionStorage.removeItem(
-                    "muwajeh_local_results"
-                );
-
-
-                // Start completely fresh exam.
-
-                window.location.href =
-                    "test.html";
-
-
-            } catch (error) {
-
-                console.error(
-                    "Error resetting exam:",
-                    error
-                );
-
-
-                showToast(
-                    "تعذر إعادة الاختبار. حاول مرة أخرى.",
-                    "error"
-                );
-
-
-                retakeButton.disabled =
-                    false;
-
-
-                retakeButton.textContent =
-                    "إعادة الاختبار";
-            }
-
-        }
+    const confirmed = await showConfirmModal(
+      "سيتم حذف نتيجتك الحالية والبدء باختبار جديد. هل تريد المتابعة؟",
     );
 
-}
+    if (!confirmed) {
+      return;
+    }
 
+    retakeButton.disabled = true;
+
+    retakeButton.textContent = "جاري تجهيز الاختبار...";
+
+    try {
+      const response = await fetch(`${API_URL}/assessments/current`, {
+        method: "DELETE",
+
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      const result = await response.json();
+
+      if (response.status === 401) {
+        localStorage.removeItem("muwajeh_token");
+
+        localStorage.removeItem("muwajeh_user");
+
+        sessionStorage.removeItem("muwajeh_token");
+
+        window.location.href = "login.html";
+
+        return;
+      }
+
+      if (!response.ok || !result.success) {
+        throw new Error(result.message || "Failed to delete previous exam");
+      }
+
+      // Clear old exam data.
+
+      localStorage.removeItem("muwajeh_exam_answers");
+
+      localStorage.removeItem("muwajeh_attempt_id");
+
+      sessionStorage.removeItem("muwajeh_local_results");
+
+      // Start completely fresh exam.
+
+      window.location.href = "test.html";
+    } catch (error) {
+      console.error("Error resetting exam:", error);
+
+      showToast("تعذر إعادة الاختبار. حاول مرة أخرى.", "error");
+
+      retakeButton.disabled = false;
+
+      retakeButton.textContent = "إعادة الاختبار";
+    }
+  });
+}
 
 // ======================================================
 // DOWNLOAD PDF
 // ======================================================
 
 async function downloadResultsPDF() {
+  const token =
+    localStorage.getItem("muwajeh_token") ||
+    sessionStorage.getItem("muwajeh_token");
 
-    const token =
-        localStorage.getItem("muwajeh_token") ||
-        sessionStorage.getItem("muwajeh_token");
+  if (!token) {
+    window.location.href = "login.html";
 
+    return;
+  }
 
-    if (!token) {
+  if (!downloadPdfButton) {
+    return;
+  }
 
-        window.location.href =
-            "login.html";
+  downloadPdfButton.disabled = true;
 
-        return;
-    }
+  const originalHTML = downloadPdfButton.innerHTML;
 
-
-    if (!downloadPdfButton) {
-        return;
-    }
-
-
-    downloadPdfButton.disabled =
-        true;
-
-
-    const originalHTML =
-        downloadPdfButton.innerHTML;
-
-
-    downloadPdfButton.innerHTML = `
+  downloadPdfButton.innerHTML = `
         <i class="fa-solid fa-spinner fa-spin"></i>
         <span>
             جاري إنشاء ملف PDF...
         </span>
     `;
 
+  try {
+    const response = await fetch(`${API_URL}/assessments/results/pdf`, {
+      method: "GET",
 
-    try {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
 
-        const response =
-            await fetch(
-                `${API_URL}/assessments/results/pdf`,
-                {
-                    method: "GET",
+    if (response.status === 401) {
+      localStorage.removeItem("muwajeh_token");
 
-                    headers: {
-                        Authorization:
-                            `Bearer ${token}`
-                    }
-                }
-            );
+      localStorage.removeItem("muwajeh_user");
 
+      sessionStorage.removeItem("muwajeh_token");
 
-        if (response.status === 401) {
+      window.location.href = "login.html";
 
-            localStorage.removeItem(
-                "muwajeh_token"
-            );
-
-            localStorage.removeItem(
-                "muwajeh_user"
-            );
-
-            sessionStorage.removeItem(
-                "muwajeh_token"
-            );
-
-            window.location.href =
-                "login.html";
-
-            return;
-        }
-
-
-        if (!response.ok) {
-
-            let message =
-                "تعذر إنشاء ملف PDF.";
-
-
-            try {
-
-                const error =
-                    await response.json();
-
-
-                if (error.message) {
-                    message =
-                        error.message;
-                }
-
-            } catch (_) {
-                // Server returned non-JSON error.
-            }
-
-
-            throw new Error(message);
-        }
-
-
-        const blob =
-            await response.blob();
-
-
-        if (!blob || blob.size === 0) {
-
-            throw new Error(
-                "ملف PDF فارغ."
-            );
-        }
-
-
-        const url =
-            window.URL.createObjectURL(blob);
-
-
-        const link =
-            document.createElement("a");
-
-
-        link.href =
-            url;
-
-
-        link.download =
-            "نتيجة-اختبار-موّجه.pdf";
-
-
-        document.body.appendChild(link);
-
-
-        link.click();
-
-
-        link.remove();
-
-
-        setTimeout(() => {
-            window.URL.revokeObjectURL(url);
-        }, 1000);
-
-
-        showToast(
-            "تم تحميل ملف PDF بنجاح",
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error(
-            "PDF download error:",
-            error
-        );
-
-
-        showToast(
-            error.message ||
-            "حدث خطأ أثناء تحميل ملف PDF.",
-            "error"
-        );
-
-
-    } finally {
-
-        downloadPdfButton.disabled =
-            false;
-
-        downloadPdfButton.innerHTML =
-            originalHTML;
+      return;
     }
-}
 
+    if (!response.ok) {
+      let message = "تعذر إنشاء ملف PDF.";
+
+      try {
+        const error = await response.json();
+
+        if (error.message) {
+          message = error.message;
+        }
+      } catch (_) {
+        // Server returned non-JSON error.
+      }
+
+      throw new Error(message);
+    }
+
+    const blob = await response.blob();
+
+    if (!blob || blob.size === 0) {
+      throw new Error("ملف PDF فارغ.");
+    }
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement("a");
+
+    link.href = url;
+
+    link.download = "نتيجة-اختبار-موّجه.pdf";
+
+    document.body.appendChild(link);
+
+    link.click();
+
+    link.remove();
+
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+    }, 1000);
+
+    showToast("تم تحميل ملف PDF بنجاح", "success");
+  } catch (error) {
+    console.error("PDF download error:", error);
+
+    showToast(error.message || "حدث خطأ أثناء تحميل ملف PDF.", "error");
+  } finally {
+    downloadPdfButton.disabled = false;
+
+    downloadPdfButton.innerHTML = originalHTML;
+  }
+}
 
 if (downloadPdfButton) {
+  downloadPdfButton.type = "button";
 
-    downloadPdfButton.type =
-        "button";
+  downloadPdfButton.addEventListener("click", function (event) {
+    event.preventDefault();
+    event.stopPropagation();
 
-
-    downloadPdfButton.addEventListener(
-        "click",
-        function (event) {
-
-            event.preventDefault();
-            event.stopPropagation();
-
-            downloadResultsPDF();
-        }
-    );
+    downloadResultsPDF();
+  });
 }
-
 
 // ======================================================
 // INITIALIZE
 // ======================================================
 
 async function initializeResults() {
+  const data = await loadResults();
 
-    const data =
-        await loadResults();
+  if (!data) {
+    return;
+  }
 
-
-    if (!data) {
-        return;
-    }
-
-
-    renderResults(
-        data.results
-    );
+  renderResults(data.results);
 }
-
 
 initializeResults();

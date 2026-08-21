@@ -478,89 +478,36 @@ body {
    ========================================================= */
 
 .score-ring {
-    position: relative;
-
     width: 80px;
     height: 80px;
-
-    flex: 0 0 80px;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
+    border: 4px solid #7D570D;
     border-radius: 50%;
-
-    background:
-        conic-gradient(
-            var(--ring-color) calc(var(--score) * 1%),
-            #E0E3E5 0
-        );
-
-    transform: rotate(-90deg);
-}
-
-.score-ring::before {
-    content: "";
-
-    position: absolute;
-
-    width: 67px;
-    height: 67px;
 
     background: #FFFFFF;
 
-    border-radius: 50%;
+    color: #7D570D;
+
+    font-family: var(--font-body);
+    font-size: 17px;
+    font-weight: 700;
 }
 
 .score-ring span {
-    position: relative;
-
-    color: var(--ring-color);
-
-    font-family: var(--font-body);
-
-    font-size: 24px;
+    color: inherit;
+    font-size: 17px;
     font-weight: 700;
-
-    line-height: 32px;
-
-    transform: rotate(90deg);
 }
 
-.score-95 {
-    --score: 95;
-    --ring-color: #F0AC3A;
+/* Top result */
+.major-card.top-card .score-ring {
+    border-color: #F0AC3A;
+    color: #F0AC3A;
 }
-
-.score-91,
-.score-85,
-.score-78,
-.score-72,
-.score-67 {
-    --ring-color: #7D570D;
-}
-
-.score-91 {
-    --score: 91;
-}
-
-.score-85 {
-    --score: 85;
-}
-
-.score-78 {
-    --score: 78;
-}
-
-.score-72 {
-    --score: 72;
-}
-
-.score-67 {
-    --score: 67;
-}
-
 
 /* =========================================================
    MAJOR INFO
