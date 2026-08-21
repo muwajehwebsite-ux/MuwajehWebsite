@@ -96,7 +96,7 @@ function renderMajor(data) {
   }
 
   if (major.university_id) {
-    universityBreadcrumb.href = `hadhramaut_university.html?id=${encodeURIComponent(major.university_id)}`;
+    universityBreadcrumb.href = "hadhramaut_university.html";
   }
 
   renderCourses(Array.isArray(major.courses) ? major.courses : []);
