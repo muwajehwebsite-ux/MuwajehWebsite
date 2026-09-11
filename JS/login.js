@@ -78,25 +78,24 @@ signupTab.addEventListener("click", () => {
 });
 
 document.querySelectorAll(".password-toggle").forEach((button) => {
-    button.addEventListener("click", () => {
+  button.addEventListener("click", () => {
+    const input = document.getElementById(button.dataset.target);
 
-        const input = document.getElementById(button.dataset.target);
+    const isPasswordHidden = input.type === "password";
 
-        const isPasswordHidden = input.type === "password";
+    // Show / hide password
+    input.type = isPasswordHidden ? "text" : "password";
 
-        // Show / hide password
-        input.type = isPasswordHidden ? "text" : "password";
-
-        // Normal eye = password hidden
-        // Eye with slash = password visible
-        button.innerHTML = isPasswordHidden
-            ? `
+    // Normal eye = password hidden
+    // Eye with slash = password visible
+    button.innerHTML = isPasswordHidden
+      ? `
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M2.5 12s3.2-5 9.5-5 9.5 5 9.5 5-3.2 5-9.5 5-9.5-5-9.5-5z"></path>
                     <circle cx="12" cy="12" r="2.4"></circle>
                 </svg>
               `
-            : `
+      : `
                 <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M3 3l18 18"></path>
                     <path d="M2.5 12s3.2-5 9.5-5 9.5 5 9.5 5-3.2 5-9.5 5-9.5-5-9.5-5z"></path>
@@ -104,13 +103,11 @@ document.querySelectorAll(".password-toggle").forEach((button) => {
                 </svg>
               `;
 
-        button.setAttribute(
-            "aria-label",
-            isPasswordHidden
-                ? "إخفاء كلمة المرور"
-                : "إظهار كلمة المرور"
-        );
-    });
+    button.setAttribute(
+      "aria-label",
+      isPasswordHidden ? "إخفاء كلمة المرور" : "إظهار كلمة المرور",
+    );
+  });
 });
 
 function getCodeInputs(container) {
@@ -254,7 +251,7 @@ signupForm.addEventListener("submit", async (event) => {
     pendingVerificationEmail = email;
     pendingVerificationType = "signup";
 
-    verificationDescription.textContent = `أرسلنا رمزاً مكوناً من 6 أرقام إلى ${email}.`;
+    verificationDescription.textContent = `أرسلنا رمزاً مكوناً من 6 أرقام إلى ${email}. إذا لم تستلم البريد الإلكتروني، يرجى التحقق من مجلد الرسائل غير المرغوب فيها (Spam)، ستجده هناك.`;
 
     clearCodeInputs(verificationModal);
     hideMessage(verificationMessage);

@@ -38,21 +38,24 @@ async function sendVerificationEmail(email, code, purpose) {
     const isSignup = purpose === "signup";
 
     const subject = isSignup
-        ? "رمز تأكيد حسابك في مواجهة"
-        : "رمز استعادة كلمة المرور في مواجهة";
+        ? "تأكيد بريدك الإلكتروني - موّجه"
+        : "استعادة كلمة المرور - موّجه";
 
     const title = isSignup
         ? "تأكيد البريد الإلكتروني"
         : "استعادة كلمة المرور";
 
     const { data, error } = await resend.emails.send({
-        from: "موّجه <noreply@muwajeh.com>",
+        from: "Muwajeh <verify@muwajeh.com>",
+        replyTo: "support@muwajeh.com",
         to: [email],
         subject,
+
         text:
             `${title}\n\n` +
             `رمز التحقق الخاص بك هو: ${code}\n\n` +
-            `هذا الرمز صالح لمدة ${CODE_EXPIRATION_MINUTES} دقائق.`,
+            `هذا الرمز صالح لمدة ${CODE_EXPIRATION_MINUTES} دقائق.\n\n` +
+            `إذا لم تستلم البريد الإلكتروني، يرجى التحقق من مجلد الرسائل غير المرغوب فيها (Spam).`,
 
         html: `
             <div dir="rtl" style="
@@ -84,6 +87,15 @@ async function sendVerificationEmail(email, code, purpose) {
 
                 <p>
                     هذا الرمز صالح لمدة ${CODE_EXPIRATION_MINUTES} دقائق فقط.
+                </p>
+
+                <p style="
+                    margin-top: 20px;
+                    color: #64748B;
+                    font-size: 14px;
+                ">
+                    إذا لم تستلم البريد الإلكتروني، يرجى التحقق من مجلد
+                    الرسائل غير المرغوب فيها (Spam).
                 </p>
             </div>
         `
@@ -327,8 +339,6 @@ router.post("/register-request", async (req, res) => {
         } catch (emailError) {
             console.error("Signup email error:", emailError);
 
-            // The account/code was created, but the email was not sent.
-            // The user can use resend after SMTP is fixed.
             return res.status(500).json({
                 success: false,
                 message: "تعذر إرسال رمز التحقق. تأكد من إعداد البريد الإلكتروني في الخادم.",
